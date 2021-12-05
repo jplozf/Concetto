@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Concetto" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/Grullo</item>
+        <item name="colorPrimaryVariant">@color/Sage</item>
+        <item name="colorOnPrimary">@color/Wheat</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/Rifle</item>
+        <item name="colorSecondaryVariant">@color/Nickel</item>
+        <item name="colorOnSecondary">@color/Nickel</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.Concetto.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Concetto.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Concetto.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

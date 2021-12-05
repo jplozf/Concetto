@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Wheat">#e1ca96</color>
+    <color name="Sage">#aca885</color>
+    <color name="Grullo">#918b76</color>
+    <color name="Nickel">#626c66</color>
+    <color name="Rifle">#434a42</color>
+    <color name="black">#000</color>
+
+    <color name="primaryColor">#ffb74d</color>
+    <color name="primaryLightColor">#ffe97d</color>
+    <color name="primaryDarkColor">#c88719</color>
+    <color name="secondaryColor">#f57c00</color>
+    <color name="secondaryLightColor">#ffad42</color>
+    <color name="secondaryDarkColor">#bb4d00</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+
+</resources>
+

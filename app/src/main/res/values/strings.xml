@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Concetto</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="prf_ODS_settings">Paramètres de l\'ODS</string>
+    <string name="prf_ODS_dialog">Choisissez votre ODS de référence</string>
+    <string name="prf_ODS_summary">Choix de l\'ODS de référence</string>
+    <string name="prf_ODS">ODS</string>
+    <string name="prf_Dico_settings">Paramètres du dictionnaire en ligne</string>
+    <string name="prf_Dico_dialog">Choisissez le dictionnaire en ligne</string>
+    <string name="prf_Dico_summary">Choix du dictionnaire en ligne</string>
+    <string name="prf_Dico">Dictionnaire en ligne</string>
+    <string name="str_searching">Recherche en cours...</string>
+</resources>
