@@ -10,14 +10,14 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         android:theme="@style/Theme.Concetto.AppBarOverlay">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/activity_main_tabs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
             android:background="@color/Grullo"
             app:tabBackground="@color/Grullo"
             app:tabGravity="start"

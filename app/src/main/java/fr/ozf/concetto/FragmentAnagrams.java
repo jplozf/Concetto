@@ -1,5 +1,16 @@
 package fr.ozf.concetto;
 
+//**************************************************************************************************
+//                                                            ___                     _   _
+//                                                           / __\___  _ __   ___ ___| |_| |_ ___
+//                                                          / /  / _ \| '_ \ / __/ _ \ __| __/ _ \
+//                                                         / /__| (_) | | | | (_|  __/ |_| || (_) |
+//                                                         \____/\___/|_| |_|\___\___|\__|\__\___/
+//
+//                                                                      (C) JPL 1964
+//
+//**************************************************************************************************
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -26,6 +37,7 @@ public class FragmentAnagrams extends Fragment {
     private String TAG = "ANAGRAMS";
     ArrayList<ImageView> anaWordLetters = new ArrayList<>();
     ArrayList<ImageView> anaGuessLetters = new ArrayList<>();
+    boolean timerRunning = false;
 
     public FragmentAnagrams() {
         // Required empty public constructor
@@ -130,17 +142,6 @@ public class FragmentAnagrams extends Fragment {
         // Hide the keyboard
         // ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
         //
-        // Spinner spnLevel = (Spinner) vw.findViewById(R.id.spnLevel);
-        // Spinner spnTime = (Spinner) vw.findViewById(R.id.spnTime);
-        // String x = spnLevel.getSelectedItem().toString();
-        // Log.i(TAG, "SELECTED ITEM : " + x);
-        // anaLevel = Integer.parseInt(x.substring(0, 1));
-        // anaLevel = 4;
-        // x = spnTime.getSelectedItem().toString();
-        // if (x.substring(0, 1).equals("Pa"))
-        //     anaTime = 0;
-        // else
-        //     anaTime = Integer.parseInt(x.substring(0, 1));
         TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
         rowWord.removeAllViews();
         // dummyRow(rowWord);
@@ -165,31 +166,37 @@ public class FragmentAnagrams extends Fragment {
             TextView textViewTimer = getActivity().findViewById(R.id.txtGameTimer);
 
             public void startTimer() {
-                new CountDownTimer(60000, 1000) {
+                timerRunning = true;
+                Spinner spnTime = (Spinner) getActivity().findViewById(R.id.spnTime);
+                String x = spnTime.getSelectedItem().toString();
+                if (x.substring(0, 1).equals("Pa"))
+                     anaTime = 0;
+                else
+                     anaTime = Integer.parseInt(x.substring(0, 1));
+                anaTime = anaTime * 60 * 1000;
+                new CountDownTimer(anaTime, 1000) {
                     public void onTick(long millisUntilFinished) {
                         MillisecondTime = millisUntilFinished;
                         UpdateTime = TimeBuff + MillisecondTime;
                         Seconds = (int) (UpdateTime / 1000);
                         Minutes = Seconds / 60;
                         Seconds = Seconds % 60;
-                        textViewTimer.setText(String.format("%02d:%02d", Minutes, Seconds));
+                        textViewTimer.setText(String.format("%02d:%02d  ", Minutes, Seconds));
                     }
 
                     public void onFinish() {
-                        textViewTimer.setText("Done!");
+                        textViewTimer.setText("Done!  ");
                     }
                 }.start();
             }
 
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
                 final TableRow rowGuess = (TableRow) vw.findViewById(R.id.rowGuess);
                 rowWord.removeAllViews();
                 rowGuess.removeAllViews();
-                for (int i = 0; i < anaLevel; i++)
-                {
+                for (int i = 0; i < anaLevel; i++) {
                     final ImageView letter = new ImageView(getContext());
                     ImageView guess = new ImageView(getContext());
                     final String l = anaWord.substring(i, i + 1);
@@ -202,11 +209,9 @@ public class FragmentAnagrams extends Fragment {
                     rowWord.addView(letter);
                     rowGuess.addView(guess);
                     //
-                    letter.setOnClickListener(new View.OnClickListener()
-                    {
+                    letter.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             letter.setBackgroundResource(getIconIDFromLetter(l, false));
                             ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
                             guess.setBackgroundResource(getIconIDFromLetter(l, true));
@@ -214,19 +219,37 @@ public class FragmentAnagrams extends Fragment {
                             Log.i(TAG, "GUESS : " + anaGuess);
                             letter.setEnabled(false);
                             anaColumn++;
-                            if (anaColumn == anaLevel)
-                            {
+                            if (anaColumn == anaLevel) {
                                 Log.i(TAG, "GUESS! : " + anaGuess);
-                                if (anaWords.contains(anaGuess))
-                                {
+                                if (anaWords.contains(anaGuess)) {
                                     anaScore++;
                                     anaNewWord(vw);
+                                }
+                                else {
+                                    for (int i = 0; i < anaLevel; i++) {
+                                        /*
+                                        anaWordLetters.get(i) =
+                                        final ImageView letter = new ImageView(getContext());
+                                        ImageView guess = new ImageView(getContext());
+                                        final String l = anaWord.substring(i, i + 1);
+                                        Log.i(TAG, "LETTER : " + l);
+                                        letter.setBackgroundResource(getIconIDFromLetter(l));
+                                        letter.setEnabled(true);
+                                        guess.setBackgroundResource(getIconIDFromLetter("?", false));
+                                        anaWordLetters.add(letter);
+                                        */
+                                        //
+                                        rowWord.addView(letter);
+                                        rowGuess.addView(guess);
+                                        //
+                                    }
                                 }
                             }
                         }
                     });
                 }
-                startTimer();
+                if (! timerRunning)
+                    startTimer();
             }
         });
         btnAnaRefresh.performClick();
