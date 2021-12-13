@@ -10,4 +10,7 @@
     <string name="prf_Dico_summary">Choix du dictionnaire en ligne</string>
     <string name="prf_Dico">Dictionnaire en ligne</string>
     <string name="str_searching">Recherche en cours...</string>
+    <string name="str_time_over">!!! C\'est fini !!!</string>
+    <string name="str_time_over_short">Fini !</string>
+    <string name="str_missed">!!! Perdu !!!</string>
 </resources>
