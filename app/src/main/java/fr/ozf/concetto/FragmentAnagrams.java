@@ -141,6 +141,7 @@ public class FragmentAnagrams extends Fragment {
     private void anaNewWord(View vw)
     {
         ImageView btnAnaRefresh = (ImageView) vw.findViewById(R.id.btnAnaRefresh);
+        ImageView btnAnaClear = (ImageView) vw.findViewById(R.id.btnAnaClear);
         // Hide the keyboard
         // ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
         //
@@ -160,8 +161,24 @@ public class FragmentAnagrams extends Fragment {
         anaWords = ((MainActivity) getActivity()).odsLib.findAnagrams(anaWord);
         anaGuess = "";
         Log.i(TAG, anaWord);
-        btnAnaRefresh.setOnClickListener(new View.OnClickListener()
-        {
+
+        btnAnaClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {                                       // CLEAR Button
+                // Toast.makeText(vw.getContext(), anaWord, Toast.LENGTH_SHORT).show();
+                StringBuilder txt = new StringBuilder();
+                for (int i = 0; i < anaWords.size(); i++) {
+                    txt.append(anaWords.get(i)).append(" - ");
+                }
+                txt.setLength(txt.length() - 3);
+                TextView txtSolution = vw.findViewById(R.id.txtSolution);
+                txtSolution.setText(txt.toString());
+                // Toast.makeText(vw.getContext(), txt, Toast.LENGTH_SHORT).show();
+                anaNewWord(vw);
+            }
+        });
+
+        btnAnaRefresh.setOnClickListener(new View.OnClickListener() {
 
             long MillisecondTime, TimeBuff, UpdateTime = 0L;
             int Seconds, Minutes, MilliSeconds;
@@ -220,6 +237,9 @@ public class FragmentAnagrams extends Fragment {
                     letter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {                           // LETTERS Buttons
+                            TextView txtSolution = vw.findViewById(R.id.txtSolution);
+                            txtSolution.setText("");
+
                             letter.setBackgroundResource(getIconIDFromLetter(l, false));
                             ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
                             guess.setBackgroundResource(getIconIDFromLetter(l, true));
@@ -235,7 +255,6 @@ public class FragmentAnagrams extends Fragment {
                                 }
                                 else {
                                     Toast.makeText(getContext(), R.string.str_missed, Toast.LENGTH_SHORT).show();
-
                                 }
                             }
                         }

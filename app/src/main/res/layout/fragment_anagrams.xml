@@ -131,6 +131,25 @@
                 </TableRow>
             </TableLayout>
 
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="100px">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/txtSolution"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center" />
+                </TableRow>
+
+            </TableLayout>
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
