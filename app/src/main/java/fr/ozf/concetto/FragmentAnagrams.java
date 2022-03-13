@@ -66,8 +66,7 @@ public class FragmentAnagrams extends Fragment {
     //***********************************************************************
     // showAnagrams()
     //***********************************************************************
-    private void showAnagrams(View vw)
-    {
+    private void showAnagrams(View vw) {
         ImageView btnAnaRefresh = (ImageView) vw.findViewById(R.id.btnAnaRefresh);
         // Hide the keyboard
         // ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -75,11 +74,9 @@ public class FragmentAnagrams extends Fragment {
         anaNewWord(vw);
 
         ImageView btnAnaClear = (ImageView) vw.findViewById(R.id.btnAnaClear);
-        btnAnaClear.setOnClickListener(new View.OnClickListener()
-        {
+        btnAnaClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
                 rowWord.removeAllViews();
                 // dummyRow(rowWord);
@@ -92,8 +89,7 @@ public class FragmentAnagrams extends Fragment {
                 anaWordLetters.clear();
                 anaGuessLetters.clear();
                 Log.i(TAG, anaWord);
-                for (int i = 0; i < anaLevel; i++)
-                {
+                for (int i = 0; i < anaLevel; i++) {
                     final ImageView letter = new ImageView(getContext());
                     ImageView guess = new ImageView(getContext());
                     final String l = anaWord.substring(i, i + 1);
@@ -105,11 +101,9 @@ public class FragmentAnagrams extends Fragment {
                     rowWord.addView(letter);
                     rowGuess.addView(guess);
                     //
-                    letter.setOnClickListener(new View.OnClickListener()
-                    {
+                    letter.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
+                        public void onClick(View v) {
                             letter.setBackgroundResource(getIconIDFromLetter(l, false));
                             ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
                             guess.setBackgroundResource(getIconIDFromLetter(l, true));
@@ -128,7 +122,7 @@ public class FragmentAnagrams extends Fragment {
     private void dummyRow(TableRow row) {
         int rowLength = row.getChildCount();
         row.removeAllViews();
-        for (int i=0; i<rowLength;i++) {
+        for (int i = 0; i < rowLength; i++) {
             ImageView guess = new ImageView(getContext());
             guess.setBackgroundResource(getIconIDFromLetter("?", false));
             row.addView(guess);
@@ -138,8 +132,7 @@ public class FragmentAnagrams extends Fragment {
     //***********************************************************************
     // anaNewWord()
     //***********************************************************************
-    private void anaNewWord(View vw)
-    {
+    private void anaNewWord(View vw) {
         ImageView btnAnaRefresh = (ImageView) vw.findViewById(R.id.btnAnaRefresh);
         ImageView btnAnaClear = (ImageView) vw.findViewById(R.id.btnAnaClear);
         // Hide the keyboard
@@ -189,9 +182,9 @@ public class FragmentAnagrams extends Fragment {
                 Spinner spnTime = (Spinner) getActivity().findViewById(R.id.spnTime);
                 String x = spnTime.getSelectedItem().toString();
                 if (x.substring(0, 1).equals("Pa"))
-                     anaTime = 0;
+                    anaTime = 0;
                 else
-                     anaTime = Integer.parseInt(x.substring(0, 1));
+                    anaTime = Integer.parseInt(x.substring(0, 1));
                 anaTime = anaTime * 60 * 1000;
                 new CountDownTimer(anaTime, 1000) {
 
@@ -252,15 +245,14 @@ public class FragmentAnagrams extends Fragment {
                                 if (anaWords.contains(anaGuess)) {
                                     anaScore++;
                                     anaNewWord(vw);
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(getContext(), R.string.str_missed, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
                     });
                 }
-                if (! timerRunning)
+                if (!timerRunning)
                     startTimer();
             }
         });
@@ -270,13 +262,11 @@ public class FragmentAnagrams extends Fragment {
     //***********************************************************************
     // getIconIDFromLetter()
     //***********************************************************************
-    private int getIconIDFromLetter(String letter)
-    {
+    private int getIconIDFromLetter(String letter) {
         int ic = R.mipmap.ic_dixio_letter_question;
         char c = letter.charAt(0);
 
-        switch (c)
-        {
+        switch (c) {
             case '!':
                 ic = getIconIDFromLetter("?", false);
                 break;
@@ -284,11 +274,9 @@ public class FragmentAnagrams extends Fragment {
                 ic = getIconIDFromLetter("?", true);
                 break;
             default:
-                if (Character.isLowerCase(c))
-                {
+                if (Character.isLowerCase(c)) {
                     ic = getIconIDFromLetter(letter, false);
-                } else
-                {
+                } else {
                     ic = getIconIDFromLetter(letter, true);
                 }
                 break;
@@ -299,14 +287,11 @@ public class FragmentAnagrams extends Fragment {
     //***********************************************************************
     // getIconIDFromLetter()
     //***********************************************************************
-    private int getIconIDFromLetter(String letter, boolean enabled)
-    {
+    private int getIconIDFromLetter(String letter, boolean enabled) {
         int ic = R.mipmap.ic_dixio_letter_question;
 
-        if (enabled == true)
-        {
-            switch (letter.toUpperCase())
-            {
+        if (enabled == true) {
+            switch (letter.toUpperCase()) {
                 case "A":
                     ic = R.mipmap.ic_dixio_letter_a;
                     break;
@@ -390,10 +375,8 @@ public class FragmentAnagrams extends Fragment {
                     ic = R.mipmap.ic_dixio_letter_question;
                     break;
             }
-        } else
-        {
-            switch (letter.toUpperCase())
-            {
+        } else {
+            switch (letter.toUpperCase()) {
                 case "A":
                     ic = R.mipmap.ic_dixio_letter_disabled_a;
                     break;
