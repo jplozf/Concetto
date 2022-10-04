@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class FragmentAnagrams extends Fragment {
+public class FragmentMelo extends Fragment {
     private int anaLevel = 7;
     private int anaTime = 3;
     private int anaColumn = 0;
@@ -35,20 +35,20 @@ public class FragmentAnagrams extends Fragment {
     private String anaGuess;
     private int anaScore = 0;
     private ArrayList<String> anaWords;
-    private String TAG = "ANAGRAMS";
+    private String TAG = "MELO";
     ArrayList<ImageView> anaWordLetters = new ArrayList<>();
     ArrayList<ImageView> anaGuessLetters = new ArrayList<>();
     boolean timerRunning = false;
     boolean timeOver = false;
 
-    public FragmentAnagrams() {
+    public FragmentMelo() {
         // Required empty public constructor
     }
 
-    public static FragmentAnagrams newInstance(int level) {
+    public static FragmentMelo newInstance(int level) {
         Bundle args = new Bundle();
         args.putInt("level", level);
-        FragmentAnagrams fragment = new FragmentAnagrams();
+        FragmentMelo fragment = new FragmentMelo();
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +57,7 @@ public class FragmentAnagrams extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vw = inflater.inflate(R.layout.fragment_anagrams, container, false);
+        View vw = inflater.inflate(R.layout.fragment_melo, container, false);
         anaLevel = getArguments().getInt("level");
         showAnagrams(vw);
         return vw;
@@ -94,9 +94,9 @@ public class FragmentAnagrams extends Fragment {
                     ImageView guess = new ImageView(getContext());
                     final String l = anaWord.substring(i, i + 1);
                     Log.i(TAG, "LETTER : " + l);
-                    letter.setBackgroundResource(getIconIDFromLetter(l));
+                    letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l));
                     letter.setEnabled(true);
-                    guess.setBackgroundResource(getIconIDFromLetter("?", false));
+                    guess.setBackgroundResource(ODSLib.getIconIDFromLetter("?", false));
                     anaWordLetters.add(letter);
                     rowWord.addView(letter);
                     rowGuess.addView(guess);
@@ -104,9 +104,9 @@ public class FragmentAnagrams extends Fragment {
                     letter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            letter.setBackgroundResource(getIconIDFromLetter(l, false));
+                            letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l, false));
                             ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
-                            guess.setBackgroundResource(getIconIDFromLetter(l, true));
+                            guess.setBackgroundResource(ODSLib.getIconIDFromLetter(l, true));
                             letter.setEnabled(false);
                             anaColumn++;
                         }
@@ -124,7 +124,7 @@ public class FragmentAnagrams extends Fragment {
         row.removeAllViews();
         for (int i = 0; i < rowLength; i++) {
             ImageView guess = new ImageView(getContext());
-            guess.setBackgroundResource(getIconIDFromLetter("?", false));
+            guess.setBackgroundResource(ODSLib.getIconIDFromLetter("?", false));
             row.addView(guess);
         }
     }
@@ -201,6 +201,10 @@ public class FragmentAnagrams extends Fragment {
                         textViewTimer.setText(R.string.str_time_over_short);
                         Toast.makeText(getContext(), R.string.str_time_over, Toast.LENGTH_SHORT).show();
                         timeOver = true;
+                        TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
+                        final TableRow rowGuess = (TableRow) vw.findViewById(R.id.rowGuess);
+                        rowWord.removeAllViews();
+                        rowGuess.removeAllViews();
                     }
 
                 }.start();
@@ -219,9 +223,9 @@ public class FragmentAnagrams extends Fragment {
                     ImageView guess = new ImageView(getContext());
                     final String l = anaWord.substring(i, i + 1);
                     Log.i(TAG, "LETTER : " + l);
-                    letter.setBackgroundResource(getIconIDFromLetter(l));
+                    letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l));
                     letter.setEnabled(true);
-                    guess.setBackgroundResource(getIconIDFromLetter("?", false));
+                    guess.setBackgroundResource(ODSLib.getIconIDFromLetter("?", false));
                     anaWordLetters.add(letter);
                     //
                     rowWord.addView(letter);
@@ -233,9 +237,9 @@ public class FragmentAnagrams extends Fragment {
                             TextView txtSolution = vw.findViewById(R.id.txtSolution);
                             txtSolution.setText("");
 
-                            letter.setBackgroundResource(getIconIDFromLetter(l, false));
+                            letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l, false));
                             ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
-                            guess.setBackgroundResource(getIconIDFromLetter(l, true));
+                            guess.setBackgroundResource(ODSLib.getIconIDFromLetter(l, true));
                             anaGuess = anaGuess + l;
                             Log.i(TAG, "GUESS : " + anaGuess);
                             letter.setEnabled(false);
@@ -258,212 +262,4 @@ public class FragmentAnagrams extends Fragment {
         });
         btnAnaRefresh.performClick();
     }
-
-    //***********************************************************************
-    // getIconIDFromLetter()
-    //***********************************************************************
-    private int getIconIDFromLetter(String letter) {
-        int ic = R.mipmap.ic_dixio_letter_question;
-        char c = letter.charAt(0);
-
-        switch (c) {
-            case '!':
-                ic = getIconIDFromLetter("?", false);
-                break;
-            case '?':
-                ic = getIconIDFromLetter("?", true);
-                break;
-            default:
-                if (Character.isLowerCase(c)) {
-                    ic = getIconIDFromLetter(letter, false);
-                } else {
-                    ic = getIconIDFromLetter(letter, true);
-                }
-                break;
-        }
-        return ic;
-    }
-
-    //***********************************************************************
-    // getIconIDFromLetter()
-    //***********************************************************************
-    private int getIconIDFromLetter(String letter, boolean enabled) {
-        int ic = R.mipmap.ic_dixio_letter_question;
-
-        if (enabled == true) {
-            switch (letter.toUpperCase()) {
-                case "A":
-                    ic = R.mipmap.ic_dixio_letter_a;
-                    break;
-                case "B":
-                    ic = R.mipmap.ic_dixio_letter_b;
-                    break;
-                case "C":
-                    ic = R.mipmap.ic_dixio_letter_c;
-                    break;
-                case "D":
-                    ic = R.mipmap.ic_dixio_letter_d;
-                    break;
-                case "E":
-                    ic = R.mipmap.ic_dixio_letter_e;
-                    break;
-                case "F":
-                    ic = R.mipmap.ic_dixio_letter_f;
-                    break;
-                case "G":
-                    ic = R.mipmap.ic_dixio_letter_g;
-                    break;
-                case "H":
-                    ic = R.mipmap.ic_dixio_letter_h;
-                    break;
-                case "I":
-                    ic = R.mipmap.ic_dixio_letter_i;
-                    break;
-                case "J":
-                    ic = R.mipmap.ic_dixio_letter_j;
-                    break;
-                case "K":
-                    ic = R.mipmap.ic_dixio_letter_k;
-                    break;
-                case "L":
-                    ic = R.mipmap.ic_dixio_letter_l;
-                    break;
-                case "M":
-                    ic = R.mipmap.ic_dixio_letter_m;
-                    break;
-                case "N":
-                    ic = R.mipmap.ic_dixio_letter_n;
-                    break;
-                case "O":
-                    ic = R.mipmap.ic_dixio_letter_o;
-                    break;
-                case "P":
-                    ic = R.mipmap.ic_dixio_letter_p;
-                    break;
-                case "Q":
-                    ic = R.mipmap.ic_dixio_letter_q;
-                    break;
-                case "R":
-                    ic = R.mipmap.ic_dixio_letter_r;
-                    break;
-                case "S":
-                    ic = R.mipmap.ic_dixio_letter_s;
-                    break;
-                case "T":
-                    ic = R.mipmap.ic_dixio_letter_t;
-                    break;
-                case "U":
-                    ic = R.mipmap.ic_dixio_letter_u;
-                    break;
-                case "V":
-                    ic = R.mipmap.ic_dixio_letter_v;
-                    break;
-                case "W":
-                    ic = R.mipmap.ic_dixio_letter_w;
-                    break;
-                case "X":
-                    ic = R.mipmap.ic_dixio_letter_x;
-                    break;
-                case "Y":
-                    ic = R.mipmap.ic_dixio_letter_y;
-                    break;
-                case "Z":
-                    ic = R.mipmap.ic_dixio_letter_z;
-                    break;
-                default:
-                case "?":
-                    ic = R.mipmap.ic_dixio_letter_question;
-                    break;
-            }
-        } else {
-            switch (letter.toUpperCase()) {
-                case "A":
-                    ic = R.mipmap.ic_dixio_letter_disabled_a;
-                    break;
-                case "B":
-                    ic = R.mipmap.ic_dixio_letter_disabled_b;
-                    break;
-                case "C":
-                    ic = R.mipmap.ic_dixio_letter_disabled_c;
-                    break;
-                case "D":
-                    ic = R.mipmap.ic_dixio_letter_disabled_d;
-                    break;
-                case "E":
-                    ic = R.mipmap.ic_dixio_letter_disabled_e;
-                    break;
-                case "F":
-                    ic = R.mipmap.ic_dixio_letter_disabled_f;
-                    break;
-                case "G":
-                    ic = R.mipmap.ic_dixio_letter_disabled_g;
-                    break;
-                case "H":
-                    ic = R.mipmap.ic_dixio_letter_disabled_h;
-                    break;
-                case "I":
-                    ic = R.mipmap.ic_dixio_letter_disabled_i;
-                    break;
-                case "J":
-                    ic = R.mipmap.ic_dixio_letter_disabled_j;
-                    break;
-                case "K":
-                    ic = R.mipmap.ic_dixio_letter_disabled_k;
-                    break;
-                case "L":
-                    ic = R.mipmap.ic_dixio_letter_disabled_l;
-                    break;
-                case "M":
-                    ic = R.mipmap.ic_dixio_letter_disabled_m;
-                    break;
-                case "N":
-                    ic = R.mipmap.ic_dixio_letter_disabled_n;
-                    break;
-                case "O":
-                    ic = R.mipmap.ic_dixio_letter_disabled_o;
-                    break;
-                case "P":
-                    ic = R.mipmap.ic_dixio_letter_disabled_p;
-                    break;
-                case "Q":
-                    ic = R.mipmap.ic_dixio_letter_disabled_q;
-                    break;
-                case "R":
-                    ic = R.mipmap.ic_dixio_letter_disabled_r;
-                    break;
-                case "S":
-                    ic = R.mipmap.ic_dixio_letter_disabled_s;
-                    break;
-                case "T":
-                    ic = R.mipmap.ic_dixio_letter_disabled_t;
-                    break;
-                case "U":
-                    ic = R.mipmap.ic_dixio_letter_disabled_u;
-                    break;
-                case "V":
-                    ic = R.mipmap.ic_dixio_letter_disabled_v;
-                    break;
-                case "W":
-                    ic = R.mipmap.ic_dixio_letter_disabled_w;
-                    break;
-                case "X":
-                    ic = R.mipmap.ic_dixio_letter_disabled_x;
-                    break;
-                case "Y":
-                    ic = R.mipmap.ic_dixio_letter_disabled_y;
-                    break;
-                case "Z":
-                    ic = R.mipmap.ic_dixio_letter_disabled_z;
-                    break;
-                default:
-                case "?":
-                    ic = R.mipmap.ic_dixio_letter_disabled_question;
-                    break;
-            }
-        }
-
-        return ic;
-    }
-
-
 }

@@ -53,33 +53,39 @@ public class FragmentGame extends Fragment {
                 if (item != null) {
                     Toast.makeText(getContext(), item.toString(), Toast.LENGTH_SHORT).show();
                     if (item.toString().startsWith("4 ")) {
-                        FragmentAnagrams nextFrag = FragmentAnagrams.newInstance(4);
+                        FragmentMelo nextFrag = FragmentMelo.newInstance(4);
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_game_container, nextFrag, "findThisFragment")
                                 .addToBackStack(null)
                                 .commit();
                     } else if (item.toString().startsWith("5 ")) {
-                        FragmentAnagrams nextFrag = FragmentAnagrams.newInstance(5);
+                        FragmentMelo nextFrag = FragmentMelo.newInstance(5);
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_game_container, nextFrag, "findThisFragment")
                                 .addToBackStack(null)
                                 .commit();
                     } else if (item.toString().startsWith("6 ")) {
-                        FragmentAnagrams nextFrag = FragmentAnagrams.newInstance(6);
+                        FragmentMelo nextFrag = FragmentMelo.newInstance(6);
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_game_container, nextFrag, "findThisFragment")
                                 .addToBackStack(null)
                                 .commit();
                     } else if (item.toString().startsWith("7 ")) {
-                        FragmentAnagrams nextFrag = FragmentAnagrams.newInstance(7);
+                        FragmentMelo nextFrag = FragmentMelo.newInstance(7);
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_game_container, nextFrag, "findThisFragment")
+                                .addToBackStack(null)
+                                .commit();
+                    } else if (item.toString().startsWith("Car")) {
+                        FragmentCaro nextFrag = FragmentCaro.newInstance();
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_game_container, nextFrag, "findThisFragment")
                                 .addToBackStack(null)
                                 .commit();
                     }
                     /*
-                    Carreau     : Grille 4 x 4, trouver tous les mots possibles
-                    Figaro      : 7 lettres, trouver tous les mots possible
+                    Caro        : Grille 4 x 4, trouver tous les mots possibles
+                    Figaro      : 7 lettres, trouver tous les mots possibles
                     Duetto      : 8 lettres, trouver le mot le plus long
                     Nabucco     : A partir d'un mot de 2 lettres, rajouter une lettre pour créer un nouveau mot et ainsi de suite
                     Rampono     : Jeu du pendu

@@ -726,6 +726,211 @@ public class ODSLib
         return out;
     }
 
+    //***********************************************************************
+    // getIconIDFromLetter()
+    //***********************************************************************
+    public static int getIconIDFromLetter(String letter) {
+        int ic = R.mipmap.ic_dixio_letter_question;
+        char c = letter.charAt(0);
+
+        switch (c) {
+            case '!':
+                ic = getIconIDFromLetter("?", false);
+                break;
+            case '?':
+                ic = getIconIDFromLetter("?", true);
+                break;
+            default:
+                if (Character.isLowerCase(c)) {
+                    ic = getIconIDFromLetter(letter, false);
+                } else {
+                    ic = getIconIDFromLetter(letter, true);
+                }
+                break;
+        }
+        return ic;
+    }
+
+    //***********************************************************************
+    // getIconIDFromLetter()
+    //***********************************************************************
+    public static int getIconIDFromLetter(String letter, boolean enabled) {
+        int ic = R.mipmap.ic_dixio_letter_question;
+
+        if (enabled) {
+            switch (letter.toUpperCase()) {
+                case "A":
+                    ic = R.mipmap.ic_dixio_letter_a;
+                    break;
+                case "B":
+                    ic = R.mipmap.ic_dixio_letter_b;
+                    break;
+                case "C":
+                    ic = R.mipmap.ic_dixio_letter_c;
+                    break;
+                case "D":
+                    ic = R.mipmap.ic_dixio_letter_d;
+                    break;
+                case "E":
+                    ic = R.mipmap.ic_dixio_letter_e;
+                    break;
+                case "F":
+                    ic = R.mipmap.ic_dixio_letter_f;
+                    break;
+                case "G":
+                    ic = R.mipmap.ic_dixio_letter_g;
+                    break;
+                case "H":
+                    ic = R.mipmap.ic_dixio_letter_h;
+                    break;
+                case "I":
+                    ic = R.mipmap.ic_dixio_letter_i;
+                    break;
+                case "J":
+                    ic = R.mipmap.ic_dixio_letter_j;
+                    break;
+                case "K":
+                    ic = R.mipmap.ic_dixio_letter_k;
+                    break;
+                case "L":
+                    ic = R.mipmap.ic_dixio_letter_l;
+                    break;
+                case "M":
+                    ic = R.mipmap.ic_dixio_letter_m;
+                    break;
+                case "N":
+                    ic = R.mipmap.ic_dixio_letter_n;
+                    break;
+                case "O":
+                    ic = R.mipmap.ic_dixio_letter_o;
+                    break;
+                case "P":
+                    ic = R.mipmap.ic_dixio_letter_p;
+                    break;
+                case "Q":
+                    ic = R.mipmap.ic_dixio_letter_q;
+                    break;
+                case "R":
+                    ic = R.mipmap.ic_dixio_letter_r;
+                    break;
+                case "S":
+                    ic = R.mipmap.ic_dixio_letter_s;
+                    break;
+                case "T":
+                    ic = R.mipmap.ic_dixio_letter_t;
+                    break;
+                case "U":
+                    ic = R.mipmap.ic_dixio_letter_u;
+                    break;
+                case "V":
+                    ic = R.mipmap.ic_dixio_letter_v;
+                    break;
+                case "W":
+                    ic = R.mipmap.ic_dixio_letter_w;
+                    break;
+                case "X":
+                    ic = R.mipmap.ic_dixio_letter_x;
+                    break;
+                case "Y":
+                    ic = R.mipmap.ic_dixio_letter_y;
+                    break;
+                case "Z":
+                    ic = R.mipmap.ic_dixio_letter_z;
+                    break;
+                default:
+                case "?":
+                    ic = R.mipmap.ic_dixio_letter_question;
+                    break;
+            }
+        } else {
+            switch (letter.toUpperCase()) {
+                case "A":
+                    ic = R.mipmap.ic_dixio_letter_disabled_a;
+                    break;
+                case "B":
+                    ic = R.mipmap.ic_dixio_letter_disabled_b;
+                    break;
+                case "C":
+                    ic = R.mipmap.ic_dixio_letter_disabled_c;
+                    break;
+                case "D":
+                    ic = R.mipmap.ic_dixio_letter_disabled_d;
+                    break;
+                case "E":
+                    ic = R.mipmap.ic_dixio_letter_disabled_e;
+                    break;
+                case "F":
+                    ic = R.mipmap.ic_dixio_letter_disabled_f;
+                    break;
+                case "G":
+                    ic = R.mipmap.ic_dixio_letter_disabled_g;
+                    break;
+                case "H":
+                    ic = R.mipmap.ic_dixio_letter_disabled_h;
+                    break;
+                case "I":
+                    ic = R.mipmap.ic_dixio_letter_disabled_i;
+                    break;
+                case "J":
+                    ic = R.mipmap.ic_dixio_letter_disabled_j;
+                    break;
+                case "K":
+                    ic = R.mipmap.ic_dixio_letter_disabled_k;
+                    break;
+                case "L":
+                    ic = R.mipmap.ic_dixio_letter_disabled_l;
+                    break;
+                case "M":
+                    ic = R.mipmap.ic_dixio_letter_disabled_m;
+                    break;
+                case "N":
+                    ic = R.mipmap.ic_dixio_letter_disabled_n;
+                    break;
+                case "O":
+                    ic = R.mipmap.ic_dixio_letter_disabled_o;
+                    break;
+                case "P":
+                    ic = R.mipmap.ic_dixio_letter_disabled_p;
+                    break;
+                case "Q":
+                    ic = R.mipmap.ic_dixio_letter_disabled_q;
+                    break;
+                case "R":
+                    ic = R.mipmap.ic_dixio_letter_disabled_r;
+                    break;
+                case "S":
+                    ic = R.mipmap.ic_dixio_letter_disabled_s;
+                    break;
+                case "T":
+                    ic = R.mipmap.ic_dixio_letter_disabled_t;
+                    break;
+                case "U":
+                    ic = R.mipmap.ic_dixio_letter_disabled_u;
+                    break;
+                case "V":
+                    ic = R.mipmap.ic_dixio_letter_disabled_v;
+                    break;
+                case "W":
+                    ic = R.mipmap.ic_dixio_letter_disabled_w;
+                    break;
+                case "X":
+                    ic = R.mipmap.ic_dixio_letter_disabled_x;
+                    break;
+                case "Y":
+                    ic = R.mipmap.ic_dixio_letter_disabled_y;
+                    break;
+                case "Z":
+                    ic = R.mipmap.ic_dixio_letter_disabled_z;
+                    break;
+                default:
+                case "?":
+                    ic = R.mipmap.ic_dixio_letter_disabled_question;
+                    break;
+            }
+        }
+        return ic;
+    }
+
     private static class ScrabbleFRSet
     {
 

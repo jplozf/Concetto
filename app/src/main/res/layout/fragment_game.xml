@@ -18,28 +18,34 @@
 
             <Spinner
                 android:id="@+id/spnLevel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:entries="@array/spinGamesItems"
                 android:minHeight="48dp"
+                android:popupBackground="@color/Nickel"
                 tools:ignore="SpeakableTextPresentCheck" />
-
-            <Spinner
-                android:id="@+id/spnTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:entries="@array/spinTimeItems"
-                android:minHeight="48dp" />
 
             <TextView
                 android:id="@+id/txtGameTimer"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="right"
                 android:text="00:00"
-                android:textColor="#212121" />
+                android:textAlignment="center"
+                android:textColor="#212121"
+                android:textSize="34sp" />
+
+            <Spinner
+                android:id="@+id/spnTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/spinTimeItems"
+                android:popupBackground="@color/Nickel"
+                android:minHeight="48dp" />
+
         </LinearLayout>
 
         <FrameLayout

@@ -4,12 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Grullo"
-    tools:context=".FragmentAnagrams">
+    tools:context=".FragmentMelo">
 
     <ScrollView android:id="@+id/Anagrams" android:layout_width="match_parent" android:layout_height="match_parent">
         <!--  Inclusion de l'interface details  -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
-            <TextView android:id="@+id/textView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:text="JEU des ANAGRAMMES" android:textColor="@color/Rifle"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="MELO"
+                android:textColor="@color/Rifle" />
             <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal"/>
             <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
                 <TextView android:id="@+id/txtAnaScore" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:fontFamily="monospace" android:gravity="center_horizontal" android:text="0/10" android:textColor="@color/Rifle" android:textSize="50sp"/>

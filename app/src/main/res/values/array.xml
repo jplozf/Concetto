@@ -15,11 +15,11 @@
         <item>Pas de limite</item>
     </string-array>
     <string-array name="spinGamesItems">
-        <item>4 lettres</item>
-        <item>5 lettres</item>
-        <item>6 lettres</item>
-        <item>7 lettres</item>
-        <item>Carreau</item>
+        <item>4 Mélo</item>
+        <item>5 Mélo</item>
+        <item>6 Mélo</item>
+        <item>7 Mélo</item>
+        <item>Caro</item>
         <item>Figaro</item>
         <item>Duetto</item>
         <item>Nabucco</item>
