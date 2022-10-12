@@ -13,4 +13,5 @@
     <string name="str_time_over">!!! C\'est fini !!!</string>
     <string name="str_time_over_short">Fini !</string>
     <string name="str_missed">!!! Perdu !!!</string>
+    <string name="back_again_to_exit">Un de plus pour sortir</string>
 </resources>

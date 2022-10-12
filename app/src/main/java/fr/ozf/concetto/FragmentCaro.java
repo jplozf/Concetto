@@ -1,5 +1,16 @@
 package fr.ozf.concetto;
 
+//**************************************************************************************************
+//                                                         ______                      __  __
+//                                                        / ____/___  ____  ________  / /_/ /_____
+//                                                       / /   / __ \/ __ \/ ___/ _ \/ __/ __/ __ \
+//                                                      / /___/ /_/ / / / / /__/  __/ /_/ /_/ /_/ /
+//                                                      \____/\____/_/ /_/\___/\___/\__/\__/\____/
+//
+//                                                                      (C) JPL 1964
+//
+//**************************************************************************************************
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,23 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentCaro#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentCaro extends Fragment {
 
     public FragmentCaro() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment FragmentCarreau.
-     */
     // TODO: Rename and change types and number of parameters
     public static FragmentCaro newInstance() {
         FragmentCaro fragment = new FragmentCaro();

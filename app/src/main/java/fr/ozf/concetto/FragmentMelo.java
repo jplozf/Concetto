@@ -1,11 +1,11 @@
 package fr.ozf.concetto;
 
 //**************************************************************************************************
-//                                                            ___                     _   _
-//                                                           / __\___  _ __   ___ ___| |_| |_ ___
-//                                                          / /  / _ \| '_ \ / __/ _ \ __| __/ _ \
-//                                                         / /__| (_) | | | | (_|  __/ |_| || (_) |
-//                                                         \____/\___/|_| |_|\___\___|\__|\__\___/
+//                                                         ______                      __  __
+//                                                        / ____/___  ____  ________  / /_/ /_____
+//                                                       / /   / __ \/ __ \/ ___/ _ \/ __/ __/ __ \
+//                                                      / /___/ /_/ / / / / /__/  __/ /_/ /_/ /_/ /
+//                                                      \____/\____/_/ /_/\___/\___/\__/\__/\____/
 //
 //                                                                      (C) JPL 1964
 //
@@ -27,6 +27,9 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
+//***********************************************************************
+// Class FragmentMelo()
+//***********************************************************************
 public class FragmentMelo extends Fragment {
     private int anaLevel = 7;
     private int anaTime = 3;
@@ -45,6 +48,9 @@ public class FragmentMelo extends Fragment {
         // Required empty public constructor
     }
 
+    //***********************************************************************
+    // FragmentMelo()
+    //***********************************************************************
     public static FragmentMelo newInstance(int level) {
         Bundle args = new Bundle();
         args.putInt("level", level);
@@ -54,6 +60,9 @@ public class FragmentMelo extends Fragment {
     }
 
     @Override
+    //***********************************************************************
+    // onCreateView()
+    //***********************************************************************
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -157,6 +166,9 @@ public class FragmentMelo extends Fragment {
 
         btnAnaClear.setOnClickListener(new View.OnClickListener() {
             @Override
+            //***********************************************************************
+            // onClick()
+            //***********************************************************************
             public void onClick(View v) {                                       // CLEAR Button
                 // Toast.makeText(vw.getContext(), anaWord, Toast.LENGTH_SHORT).show();
                 StringBuilder txt = new StringBuilder();
@@ -177,6 +189,9 @@ public class FragmentMelo extends Fragment {
             int Seconds, Minutes, MilliSeconds;
             TextView textViewTimer = getActivity().findViewById(R.id.txtGameTimer);
 
+            //***********************************************************************
+            // startTimer()
+            //***********************************************************************
             public void startTimer() {
                 timerRunning = true;
                 Spinner spnTime = (Spinner) getActivity().findViewById(R.id.spnTime);
@@ -188,6 +203,9 @@ public class FragmentMelo extends Fragment {
                 anaTime = anaTime * 60 * 1000;
                 new CountDownTimer(anaTime, 1000) {
 
+                    //***********************************************************************
+                    // onTick()
+                    //***********************************************************************
                     public void onTick(long millisUntilFinished) {
                         MillisecondTime = millisUntilFinished;
                         UpdateTime = TimeBuff + MillisecondTime;
@@ -197,6 +215,9 @@ public class FragmentMelo extends Fragment {
                         textViewTimer.setText(String.format("%02d:%02d  ", Minutes, Seconds));
                     }
 
+                    //***********************************************************************
+                    // onFinish()
+                    //***********************************************************************
                     public void onFinish() {
                         textViewTimer.setText(R.string.str_time_over_short);
                         Toast.makeText(getContext(), R.string.str_time_over, Toast.LENGTH_SHORT).show();
@@ -211,6 +232,9 @@ public class FragmentMelo extends Fragment {
             }
 
             @Override
+            //***********************************************************************
+            // onClick()
+            //***********************************************************************
             public void onClick(View v) {                                       // REFRESH Button
                 TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
                 final TableRow rowGuess = (TableRow) vw.findViewById(R.id.rowGuess);
@@ -233,6 +257,9 @@ public class FragmentMelo extends Fragment {
                     //
                     letter.setOnClickListener(new View.OnClickListener() {
                         @Override
+                        //***********************************************************************
+                        // onClick()
+                        //***********************************************************************
                         public void onClick(View v) {                           // LETTERS Buttons
                             TextView txtSolution = vw.findViewById(R.id.txtSolution);
                             txtSolution.setText("");
