@@ -37,7 +37,7 @@ public class FragmentMelo extends Fragment {
     private int anaTime = 3;
     private int anaColumn = 0;
     private String anaWord;
-    private String anaGuess;
+    private String anaGuess = "";
     private int anaScore = 0;
     private ArrayList<String> anaWords;
     private String TAG = "MELO";
@@ -45,9 +45,6 @@ public class FragmentMelo extends Fragment {
     ArrayList<ImageView> anaGuessLetters = new ArrayList<>();
     boolean timerRunning = false;
     boolean timeOver = false;
-    private volatile String nextAnaWord;
-    private volatile ArrayList<String> nextAnaWords;
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis = 0;
     long MillisecondTime, TimeBuff, UpdateTime = 0L;
@@ -88,6 +85,7 @@ public class FragmentMelo extends Fragment {
                     textViewTimer.setText(R.string.str_time_over_short);
                 Toast.makeText(getContext(), R.string.str_time_over, Toast.LENGTH_SHORT).show();
                 timeOver = true;
+                timerRunning = false;
                 if (getView() != null) {
                     TableRow rowWord = (TableRow) getView().findViewById(R.id.rowWord);
                     final TableRow rowGuess = (TableRow) getView().findViewById(R.id.rowGuess);
@@ -110,6 +108,30 @@ public class FragmentMelo extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            anaWord = savedInstanceState.getString("anaWord");
+            anaWords = savedInstanceState.getStringArrayList("anaWords");
+            anaScore = savedInstanceState.getInt("anaScore");
+            timeLeftInMillis = savedInstanceState.getLong("timeLeftInMillis");
+            timerRunning = savedInstanceState.getBoolean("timerRunning");
+            anaGuess = savedInstanceState.getString("anaGuess");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("anaWord", anaWord);
+        outState.putStringArrayList("anaWords", anaWords);
+        outState.putInt("anaScore", anaScore);
+        outState.putLong("timeLeftInMillis", timeLeftInMillis);
+        outState.putBoolean("timerRunning", timerRunning);
+        outState.putString("anaGuess", anaGuess);
+    }
+
 
     @Override
     //***********************************************************************
@@ -120,59 +142,35 @@ public class FragmentMelo extends Fragment {
         // Inflate the layout for this fragment
         View vw = inflater.inflate(R.layout.fragment_melo, container, false);
         anaLevel = getArguments().getInt("level");
-        if (anaWord == null) {
-            prepareNextWord();
-        }
-        showAnagrams(vw);
-        return vw;
-    }
 
-    //***********************************************************************
-    // showAnagrams()
-    //***********************************************************************
-    private void showAnagrams(View vw) {
-        ImageView btnAnaRefresh = (ImageView) vw.findViewById(R.id.btnAnaRefresh);
-        // Hide the keyboard
-        // ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        //
-        boolean isNewGame = (anaWord == null);
-
-        if (isNewGame) {
-            anaNewWord(vw);
-        } else {
-            displayCurrentWord(vw);
-            TextView txtAnaScore = (TextView) vw.findViewById(R.id.txtAnaScore);
-            txtAnaScore.setText(Integer.toString(anaScore));
-        }
-
+        // Setup Listeners
         ImageView btnAnaClear = (ImageView) vw.findViewById(R.id.btnAnaClear);
         btnAnaClear.setOnClickListener(new View.OnClickListener() {
             @Override
-            //***********************************************************************
-            // onClick()
-            //***********************************************************************
             public void onClick(View v) {                                       // CLEAR Button
-                // Toast.makeText(vw.getContext(), anaWord, Toast.LENGTH_SHORT).show();
                 StringBuilder txt = new StringBuilder();
-                for (int i = 0; i < anaWords.size(); i++) {
-                    txt.append(anaWords.get(i)).append(" - ");
+                if (anaWords != null) {
+                    for (int i = 0; i < anaWords.size(); i++) {
+                        txt.append(anaWords.get(i)).append(" - ");
+                    }
+                    txt.setLength(txt.length() - 3);
                 }
-                txt.setLength(txt.length() - 3);
                 TextView txtSolution = vw.findViewById(R.id.txtSolution);
                 txtSolution.setText(txt.toString());
-                // Toast.makeText(vw.getContext(), txt, Toast.LENGTH_SHORT).show();
                 anaNewWord(vw);
             }
         });
 
+        ImageView btnAnaRefresh = (ImageView) vw.findViewById(R.id.btnAnaRefresh);
         btnAnaRefresh.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            //***********************************************************************
-            // onClick()
-            //***********************************************************************
             public void onClick(View v) {                                       // REFRESH Button
-                displayCurrentWord(vw);
+                if (anaWord == null) {
+                    anaNewWord(vw);
+                } else {
+                    displayCurrentWord(vw);
+                }
+
                 if (!timerRunning) {
                     Spinner spnTime = (Spinner) getActivity().findViewById(R.id.spnTime);
                     String x = spnTime.getSelectedItem().toString();
@@ -186,88 +184,102 @@ public class FragmentMelo extends Fragment {
             }
         });
 
-        if (isNewGame) {
+
+        // If anaWord is null, it means this is a fresh game. Start one.
+        // Otherwise, the state was restored in onCreate, so just display the board.
+        if (anaWord == null) {
             btnAnaRefresh.performClick();
+        } else {
+            displayCurrentWord(vw);
+            TextView txtAnaScore = (TextView) vw.findViewById(R.id.txtAnaScore);
+            txtAnaScore.setText(Integer.toString(anaScore));
         }
+
+        return vw;
     }
 
     //***********************************************************************
     // dummyRow()
-    //***********************************************************************
-    private void dummyRow(TableRow row) {
-        int rowLength = row.getChildCount();
-        row.removeAllViews();
-        for (int i = 0; i < rowLength; i++) {
-            ImageView guess = new ImageView(getContext());
-            guess.setBackgroundResource(ODSLib.getIconIDFromLetter("?", false));
-            row.addView(guess);
-        }
-    }
-
-    //***********************************************************************
-    // prepareNextWord()
-    //***********************************************************************
-    private void prepareNextWord() {
-        executorService.submit(() -> {
-            if (getActivity() != null) {
-                String word = ((MainActivity) getActivity()).odsLib.getRandomWord(anaLevel);
-                nextAnaWord = ((MainActivity) getActivity()).odsLib.shuffleWord(word);
-                nextAnaWords = ((MainActivity) getActivity()).odsLib.findAnagrams(nextAnaWord);
-            }
-        });
-    }
-
-    //***********************************************************************
-    // displayCurrentWord()
     //***********************************************************************
     private void displayCurrentWord(View vw) {
         TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
         final TableRow rowGuess = (TableRow) vw.findViewById(R.id.rowGuess);
         rowWord.removeAllViews();
         rowGuess.removeAllViews();
-        anaColumn = 0;
-        anaGuess = "";
-        for (int i = 0; i < anaLevel; i++) {
-            final ImageView letter = new ImageView(getContext());
-            ImageView guess = new ImageView(getContext());
-            final String l = anaWord.substring(i, i + 1);
-            Log.i(TAG, "LETTER : " + l);
-            letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l));
-            letter.setEnabled(true);
-            guess.setBackgroundResource(ODSLib.getIconIDFromLetter("?", false));
-            anaWordLetters.add(letter);
-            //
-            rowWord.addView(letter);
-            rowGuess.addView(guess);
-            //
-            letter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                //***********************************************************************
-                // onClick()
-                //***********************************************************************
-                public void onClick(View v) {                           // LETTERS Buttons
-                    TextView txtSolution = vw.findViewById(R.id.txtSolution);
-                    txtSolution.setText("");
+        anaColumn = (anaGuess != null) ? anaGuess.length() : 0;
 
+        // Create a mutable list of characters available to be picked.
+        ArrayList<Character> availableLetters = new ArrayList<>();
+        if (anaWord != null) {
+            for (char c : anaWord.toCharArray()) {
+                availableLetters.add(c);
+            }
+        }
+
+        // Remove letters that are already part of the current guess.
+        if (anaGuess != null) {
+            for (char c : anaGuess.toCharArray()) {
+                availableLetters.remove(Character.valueOf(c));
+            }
+        }
+
+        // Build the top row of letters (the anagram).
+        if (anaWord != null) {
+            for (int i = 0; i < anaWord.length(); i++) {
+                final ImageView letter = new ImageView(getContext());
+                ImageView guess = new ImageView(getContext());
+                final String l = anaWord.substring(i, i + 1);
+                Log.i(TAG, "LETTER : " + l);
+
+                // If an instance of the letter is still available, it's enabled.
+                if (availableLetters.contains(l.charAt(0))) {
+                    letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l));
+                    letter.setEnabled(true);
+                    // Decrement the count of this available letter.
+                    availableLetters.remove(Character.valueOf(l.charAt(0)));
+                } else {
                     letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l, false));
-                    ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
-                    guess.setBackgroundResource(ODSLib.getIconIDFromLetter(l, true));
-                    anaGuess = anaGuess + l;
-                    Log.i(TAG, "GUESS : " + anaGuess);
                     letter.setEnabled(false);
-                    anaColumn++;
-                    if (anaColumn == anaLevel) {
-                        Log.i(TAG, "GUESS! : " + anaGuess);
-                        if (anaWords.contains(anaGuess)) {
-                            anaScore++;
-                            anaNewWord(vw);
-                            prepareNextWord();
-                        } else {
-                            Toast.makeText(getContext(), R.string.str_missed, Toast.LENGTH_SHORT).show();
+                }
+
+                guess.setBackgroundResource(ODSLib.getIconIDFromLetter("?", false));
+                anaWordLetters.add(letter);
+                rowWord.addView(letter);
+                rowGuess.addView(guess);
+
+                letter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView txtSolution = vw.findViewById(R.id.txtSolution);
+                        txtSolution.setText("");
+
+                        letter.setBackgroundResource(ODSLib.getIconIDFromLetter(l, false));
+                        ImageView guess = (ImageView) rowGuess.getVirtualChildAt(anaColumn);
+                        guess.setBackgroundResource(ODSLib.getIconIDFromLetter(l, true));
+                        anaGuess = anaGuess + l;
+                        Log.i(TAG, "GUESS : " + anaGuess);
+                        letter.setEnabled(false);
+anaColumn++;
+                        if (anaColumn == anaLevel) {
+                            Log.i(TAG, "GUESS! : " + anaGuess);
+                            if (anaWords.contains(anaGuess)) {
+                                anaScore++;
+                                anaNewWord(vw);
+                            } else {
+                                Toast.makeText(getContext(), R.string.str_missed, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+        }
+
+        // Redraw the guess row with the letters from the restored guess.
+        if (anaGuess != null) {
+            for (int i = 0; i < anaGuess.length(); i++) {
+                ImageView guess = (ImageView) rowGuess.getVirtualChildAt(i);
+                guess.setBackgroundResource(ODSLib.getIconIDFromLetter(anaGuess.substring(i, i + 1), true));
+            }
         }
     }
 
@@ -275,30 +287,17 @@ public class FragmentMelo extends Fragment {
     // anaNewWord()
     //***********************************************************************
     private void anaNewWord(View vw) {
-        ImageView btnAnaRefresh = (ImageView) vw.findViewById(R.id.btnAnaRefresh);
-        ImageView btnAnaClear = (ImageView) vw.findViewById(R.id.btnAnaClear);
-        // Hide the keyboard
-        // ((InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        //
         TableRow rowWord = (TableRow) vw.findViewById(R.id.rowWord);
         rowWord.removeAllViews();
-        // dummyRow(rowWord);
-        //
         final TableRow rowGuess = (TableRow) vw.findViewById(R.id.rowGuess);
-        // dummyRow(rowGuess);
         rowGuess.removeAllViews();
         //
         TextView txtAnaScore = (TextView) vw.findViewById(R.id.txtAnaScore);
         txtAnaScore.setText(Integer.toString(anaScore));
         //
         anaColumn = 0;
-        if (nextAnaWord != null) {
-            anaWord = nextAnaWord;
-            anaWords = nextAnaWords;
-        } else {
-            anaWord = ((MainActivity) getActivity()).odsLib.shuffleWord(((MainActivity) getActivity()).odsLib.getRandomWord(anaLevel));
-            anaWords = ((MainActivity) getActivity()).odsLib.findAnagrams(anaWord);
-        }
+        anaWord = ((MainActivity) getActivity()).odsLib.shuffleWord(((MainActivity) getActivity()).odsLib.getRandomWord(anaLevel));
+        anaWords = ((MainActivity) getActivity()).odsLib.findAnagrams(anaWord);
         anaGuess = "";
         Log.i(TAG, anaWord);
         displayCurrentWord(vw);

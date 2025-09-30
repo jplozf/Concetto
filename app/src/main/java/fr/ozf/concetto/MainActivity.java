@@ -11,8 +11,6 @@ package fr.ozf.concetto;
 //
 //**************************************************************************************************
 
-import static android.app.PendingIntent.getActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void configureViewPager() {
         pager = (ViewPager)findViewById(R.id.view_pager);
         pager.setAdapter(new PageAdapter(getSupportFragmentManager()));
+        pager.setOffscreenPageLimit(5);
         TabLayout tabs= (TabLayout)findViewById(R.id.activity_main_tabs);
         tabs.setupWithViewPager(pager);
         tabs.setTabMode(TabLayout.MODE_FIXED);
